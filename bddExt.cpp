@@ -73,20 +73,16 @@ void Collect_CubeSet( BddNode& f, sstr_t& fsstr, size_t len ){
 	}	
 }
 
-BddNode Get_ByPattern( const std::string& pattern ){
+BddNode Get_ByPattern( BddMgr& bm, const std::string& pattern ){
 	BddNode ret = BddNode::_one;
-	std::cout << pattern <<std::endl;
 	for( int i=1; i<pattern.size(); i++ ){
-		std::cout<<pattern[i];
-		BddNode cur = bddMgr->getSupport(i);
+		BddNode cur = bm.getSupport(i);
 		ret &= (pattern[i]=='1')? cur: ~cur; 
 	}
-	std::cout<<std::endl;
-	std::cout << ret;
 	return ret;
 }
 
-BddNode ShannonCofactor( BddNode& f, BddNode& g ){
+BddNode ShannonCofactor( BddMgr& bm, BddNode& f, BddNode& g ){
 	sstr_t fsstr, gsstr;
 	size_t len = std::max( f.getLevel(), g.getLevel() );
 	Collect_CubeSet( f, fsstr, len );
@@ -105,23 +101,27 @@ BddNode ShannonCofactor( BddNode& f, BddNode& g ){
 	BddNode fgFalse= BddNode::_zero;
 	for( fitr = fsstr.begin(); fitr != fsstr.end(); fitr ++ ){
 		if( gsstr.find( *fitr ) != gsstr.end() ){
-			BddNode cur = Get_ByPattern( *fitr );
-			std::cout <<cur;
+			BddNode cur = Get_ByPattern( bm, *fitr );
 			fgTrue |= cur;
 		}
 
-	}/**
+	}/**/
 	for( fitr = fsstr.begin(); fitr != fsstr.end(); fitr ++ ){
 		if( gsstr.find( *fitr ) == gsstr.end() ){
 			BddNode cur ;
-			cur = Get_ByPattern( *fitr );
+			cur = Get_ByPattern( bm, *fitr );
 			fgFalse |= cur;
 		}
 
 	}
 	/**/
+	std::cout <<"Cofactor of g5=1"<<std::endl;;
 	std::cout << fgTrue ;
-	//std::cout <<fgFalse;
+	std::cout <<"Cofactor of g5=0"<<std::endl;
+	std::cout <<fgFalse;
+
+	std::cout<<( (fgTrue & g) | fgFalse & (~g));
+	std::cout << f;
 	return BddNode::_zero;
 }
 

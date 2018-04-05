@@ -5,4 +5,4 @@
 #include "bddNode.h"
 #include "bddMgr.h"
 
-BddNode ShannonCofactor( BddNode& f, BddNode& g );
+BddNode ShannonCofactor( BddMgr&, BddNode& f, BddNode& g );

@@ -51,14 +51,14 @@ main()
 	BddNode g6 = d  | g2;
 	BddNode g7 = g3 & g6;
 	BddNode g8 = g4 | g7;
-	BddNode g9 = f  & g8;
+	BddNode g9 = f  & g5 & g8;
 	
 	//Compute Cofactor
 	//BddNode g9pos = f & g8;
 	//BddNode g9neg = f ;//BddNode::_zero;
 	//BddNode diff = g9pos ^ g9neg;
 
-	ShannonCofactor( g9, g5 );
+	ShannonCofactor( bm, g9, g5 );
 	//ofstream ofile("i.dot");
 	//i.drawBdd("i", ofile);
 	//system("dot -o i.png -Tpng i.dot");
